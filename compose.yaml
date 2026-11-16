@@ -3,12 +3,21 @@ services:
     build:
       context: .
       dockerfile: crawler/Dockerfile
+    env_file:
+      - path: .env
+        required: false
     restart: unless-stopped
     volumes:
       - ./data:/data
     ports:
       - "3001:3001"
     environment:
+      - CRAWL_SCHEDULE=${CRAWL_SCHEDULE:-0 * * * *}
+      - CRAWL_ON_STARTUP=${CRAWL_ON_STARTUP:-true}
+      - PROXY_SERVER=${PROXY_SERVER:-}
+      - PROXY_USERNAME=${PROXY_USERNAME:-}
+      - PROXY_PASSWORD=${PROXY_PASSWORD:-}
+      - TWITTER_COOKIE_ISSUER_URL=${TWITTER_COOKIE_ISSUER_URL:-}
       - ANALYZER_URL=${ANALYZER_URL:-}
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:3001/health"]
