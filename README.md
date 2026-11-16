@@ -86,6 +86,8 @@ docker compose --profile analyzer up -d
 | `TWITTER_COOKIE_ISSUER_URL` | - | Cookie issuer の URL。パスワード・OTP を送信しセッション Cookie を受け取るため、信頼できる内部/プライベートネットワークのエンドポイントだけを指定し、公開してはならない |
 | `ANALYZER_URL` | - | analyzer サービスの URL（設定時にクロール後に自動分析を実行する） |
 
+Docker Compose は `.env` の crawler 設定を crawler コンテナに渡します。アカウント別 Cookie を使う場合は、`.env` に `TWITTER_AUTH_TOKEN_<アカウント名>` と `TWITTER_CT0_<アカウント名>` を追加してください。アカウント名は大文字にします。
+
 ### viewer
 
 | 変数名 | デフォルト | 説明 |
