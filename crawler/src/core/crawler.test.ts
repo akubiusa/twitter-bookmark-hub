@@ -3,7 +3,7 @@ import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import test from 'node:test'
-import { isRunning, runCrawl } from './crawler'
+import { getCrawlJobCompletionStatus, isRunning, runCrawl } from './crawler'
 import { initDatabase } from '../infra/database'
 
 const dataDir = process.env.DATA_DIR ?? ''
@@ -33,4 +33,12 @@ void test('resets the running flag when crawl-job creation fails', async () => {
     db.close()
     fs.rmSync(testDir, { recursive: true, force: true })
   }
+})
+
+void test('all failed accounts produce an error crawl job', () => {
+  assert.equal(getCrawlJobCompletionStatus(0), 'error')
+})
+
+void test('at least one successful account produces a successful crawl job', () => {
+  assert.equal(getCrawlJobCompletionStatus(1), 'success')
 })

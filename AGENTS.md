@@ -427,6 +427,8 @@ Cookie の取得順序 (優先度順):
 
 ## 環境変数
 
+Docker Compose は `.env` を crawler コンテナの env file として読み込む。アカウント別 Cookie のようにアカウント名で変わる環境変数も `.env` に設定すれば crawler に渡る。
+
 ### crawler
 
 | 変数名 | Dockerfile デフォルト | 説明 |

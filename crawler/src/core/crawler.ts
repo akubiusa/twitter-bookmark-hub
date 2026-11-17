@@ -156,6 +156,13 @@ function classifyError(
   return status === undefined ? 'unknown' : 'api'
 }
 
+/** 成功アカウント数が 0 なら error、それ以外なら success を返す。 */
+export function getCrawlJobCompletionStatus(
+  successCount: number
+): 'success' | 'error' {
+  return successCount === 0 ? 'error' : 'success'
+}
+
 /**
  * 全アカウントのブックマークをクロールしてデータベースに保存する。
  * クロール完了後、Twitter 側で削除済みのブックマークを DB から自動削除する。
@@ -415,7 +422,7 @@ export async function runCrawl(db: Database.Database): Promise<void> {
       )
     }
 
-    updateCrawlJob(db, jobId, 'success', {
+    updateCrawlJob(db, jobId, getCrawlJobCompletionStatus(successCount), {
       finishedAt: new Date().toISOString(),
       accountsSucceeded: successCount,
     })
